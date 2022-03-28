@@ -1,0 +1,113 @@
+plugins {
+    id 'idea'
+    id 'java'
+    id 'checkstyle'
+    id 'pmd'
+    id 'jacoco'
+    id 'org.owasp.dependencycheck' version '7.0.0'
+}
+
+group = 'com.raksit.example'
+version = '0.0.1'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://plugins.gradle.org/m2' }
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+test {
+    testLogging.showStandardStreams = false
+    useJUnitPlatform()
+
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
+    reports {
+        html.enabled = true
+    }
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpDir = file("$buildDir/jacoco/classpathdumps")
+    }
+    finalizedBy jacocoTestReport
+}
+
+checkstyle {
+    toolVersion = "8.33"
+    ignoreFailures = false
+    sourceSets = [sourceSets.main]
+    maxErrors = 0
+    maxWarnings = 0
+    reportsDir = file("$project.buildDir/reports/checkstyle")
+}
+
+pmd {
+    toolVersion = "6.21.0"
+    ignoreFailures = false
+    sourceSets = [sourceSets.main]
+    reportsDir = file("$project.buildDir/reports/pmd")
+    ruleSets = ["java-basic", "java-braces"]
+}
+
+jacoco {
+    toolVersion = '0.8.7'
+    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+def jacocoExcludedClasses = [
+
+]
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+    }
+    classDirectories.setFrom(classDirectories.files.collect {
+        fileTree(dir: it, exclude: jacocoExcludedClasses)
+    })
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        html.destination file("$buildDir/reports/jacoco")
+    }
+    afterEvaluate {
+        classDirectories.setFrom(classDirectories.files.collect {
+            fileTree(dir: it, exclude: jacocoExcludedClasses)
+        })
+    }
+}
+
+task zipReports(type: Zip) {
+    archiveFileName = "${rootProject.name}-${project.name}-reports.zip"
+    destinationDirectory = file("$buildDir/check-reports")
+
+    from("$buildDir/reports")
+}
+
+zipReports {
+    dependsOn check
+}
+
+dependencyCheck {
+    failBuildOnCVSS = 6
+    suppressionFile = 'config/dependencycheck/suppressions.xml'
+}
+
+check.dependsOn(jacocoTestCoverageVerification)
+test.shouldRunAfter(pmdMain)
+jacocoTestReport.dependsOn(test)
+jacocoTestCoverageVerification.dependsOn(jacocoTestReport)
