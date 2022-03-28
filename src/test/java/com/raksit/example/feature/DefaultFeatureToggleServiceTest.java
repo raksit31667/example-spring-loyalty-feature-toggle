@@ -12,48 +12,48 @@ class DefaultFeatureToggleServiceTest {
   @Test
   void shouldReturnTrue_whenIsEnabled_givenPropertiesReturnsTrue() {
     // Given
-    DefaultFeatureFlagProperties properties = new DefaultFeatureFlagProperties();
-    properties.setFlags(new HashMap<>() {
-      {
-        put("EXAMPLE_SPRING_LOYALTY_EXAMPLE_FEATURE", true);
-      }
-    });
-    DefaultFeatureToggleService defaultFeatureToggleService = new DefaultFeatureToggleService(properties);
+    DefaultFeatureToggleService defaultFeatureToggleService = new DefaultFeatureToggleService(
+        new HashMap<>() {
+          {
+            put("EXAMPLE_SPRING_LOYALTY_EXAMPLE_FEATURE", true);
+          }
+        });
 
     // When
     // Then
-    assertThat(defaultFeatureToggleService.isEnabled(EXAMPLE_SPRING_LOYALTY_EXAMPLE_FEATURE), equalTo(true));
+    assertThat(defaultFeatureToggleService.isEnabled(EXAMPLE_SPRING_LOYALTY_EXAMPLE_FEATURE),
+        equalTo(true));
   }
 
   @Test
   void shouldReturnFalse_whenIsEnabled_givenPropertiesReturnsFalse() {
     // Given
-    DefaultFeatureFlagProperties properties = new DefaultFeatureFlagProperties();
-    properties.setFlags(new HashMap<>() {
-      {
-        put("EXAMPLE_SPRING_LOYALTY_EXAMPLE_FEATURE", false);
-      }
-    });
-    DefaultFeatureToggleService defaultFeatureToggleService = new DefaultFeatureToggleService(properties);
+    DefaultFeatureToggleService defaultFeatureToggleService = new DefaultFeatureToggleService(
+        new HashMap<>() {
+          {
+            put("EXAMPLE_SPRING_LOYALTY_EXAMPLE_FEATURE", false);
+          }
+        });
 
     // When
     // Then
-    assertThat(defaultFeatureToggleService.isEnabled(EXAMPLE_SPRING_LOYALTY_EXAMPLE_FEATURE), equalTo(false));
+    assertThat(defaultFeatureToggleService.isEnabled(EXAMPLE_SPRING_LOYALTY_EXAMPLE_FEATURE),
+        equalTo(false));
   }
 
   @Test
   void shouldReturnFalse_whenIsEnabled_givenPropertiesNotFound() {
     // Given
-    DefaultFeatureFlagProperties properties = new DefaultFeatureFlagProperties();
-    properties.setFlags(new HashMap<>() {
-      {
-        put("EXAMPLE_SPRING_LOYALTY_BLAH_BLAH", true);
-      }
-    });
-    DefaultFeatureToggleService defaultFeatureToggleService = new DefaultFeatureToggleService(properties);
+    DefaultFeatureToggleService defaultFeatureToggleService = new DefaultFeatureToggleService(
+        new HashMap<>() {
+          {
+            put("EXAMPLE_SPRING_LOYALTY_BLAH_BLAH", true);
+          }
+        });
 
     // When
     // Then
-    assertThat(defaultFeatureToggleService.isEnabled(EXAMPLE_SPRING_LOYALTY_EXAMPLE_FEATURE), equalTo(false));
+    assertThat(defaultFeatureToggleService.isEnabled(EXAMPLE_SPRING_LOYALTY_EXAMPLE_FEATURE),
+        equalTo(false));
   }
 }

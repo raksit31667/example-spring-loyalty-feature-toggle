@@ -1,18 +1,17 @@
 package com.raksit.example.feature;
 
-import org.springframework.stereotype.Component;
+import java.util.Map;
 
-@Component
 public class DefaultFeatureToggleService implements FeatureToggleService {
 
-  private final DefaultFeatureFlagProperties featureFlagProperties;
+  private final Map<String, Boolean> featureFlagProperties;
 
-  public DefaultFeatureToggleService(DefaultFeatureFlagProperties featureFlagProperties) {
+  public DefaultFeatureToggleService(Map<String, Boolean> featureFlagProperties) {
     this.featureFlagProperties = featureFlagProperties;
   }
 
   @Override
   public boolean isEnabled(FeatureName featureName) {
-    return featureFlagProperties.getFlags().getOrDefault(featureName.name(), false);
+    return featureFlagProperties.getOrDefault(featureName.name(), false);
   }
 }
