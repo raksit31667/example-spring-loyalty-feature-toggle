@@ -2,6 +2,7 @@ version: '3'
 services:
   test:
     image: openjdk:17.0.2-slim
+    working_dir: /
     command: ./gradlew clean build
     environment:
       GITHUB_USERNAME: ${GITHUB_USERNAME}
@@ -12,6 +13,7 @@ services:
       - gradle-cache:/root/.gradle
   publish:
     image: openjdk:17.0.2-slim
+    working_dir: /
     command: ./gradlew clean bootJar publish
     environment:
       GITHUB_USERNAME: ${GITHUB_USERNAME}
