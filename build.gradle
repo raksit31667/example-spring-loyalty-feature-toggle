@@ -12,7 +12,7 @@ plugins {
 def semanticVersion = System.getenv("SEMANTIC_VERSION")
 
 group = 'com.raksit.example'
-version = semanticVersion == null ? '0.0.1-SNAPSHOT' : semanticVersion
+version = semanticVersion == null ? '0.0.1' : semanticVersion
 
 dependencyManagement {
     imports {
