@@ -3,7 +3,7 @@ services:
   test:
     image: openjdk:17.0.2-slim
     working_dir: $PWD
-    command: ./gradlew clean test
+    command: ./gradlew clean check
     environment:
       GITHUB_USERNAME: ${GITHUB_USERNAME}
       GITHUB_TOKEN: ${GITHUB_TOKEN}

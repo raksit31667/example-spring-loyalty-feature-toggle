@@ -4,4 +4,4 @@ set -euo pipefail
 
 echo "--- Running Git pre-push hook ---"
 
-./gradlew clean test
+./gradlew clean check
