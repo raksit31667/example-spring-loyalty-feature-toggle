@@ -30,22 +30,6 @@ Fill environment variables in `.envrc`, then load environment variables by runni
 $ direnv allow
 ```
 
-Finally, start local server on `local` active profile by running:
-
-```shell
-$ docker-compose -f docker-compose-local.yml up -d && ./gradlew clean api-service:bootRun
-```
-
-```shell
-$ docker-compose -f docker-compose-local.yml up -d && ./gradlew clean batch-job:bootRun
-```
-
-For other active profiles, specify profile on System property as:
-
-```shell
-$ ./gradlew clean api-service:bootRun -Dspring.profile.active=<your-profile-name-comma-separated>
-```
-
 ### Compile and Build
 
 ```
